@@ -1,0 +1,85 @@
+! pip install lucidsonicdreams
+#Import modules
+import numpy as np 
+from skimage import data, color
+from skimage.transform import swirl
+from skimage.transform import rotate
+from skimage.transform import rescale
+from lucidsonicdreams import EffectsGenerator
+from lucidsonicdreams import LucidSonicDream
+from google.colab import files
+
+#Define swirl effect
+def swirl_func(array, strength, amplitude):
+  swirled_image = swirl(array, 
+                        rotation = 0, 
+                        strength = 100 * strength * amplitude,
+                        radius= 360)
+  return (swirled_image*255).astype(np.uint8)
+
+
+#Define rotate effect
+def rotate_func(array, strength, amplitude):
+  rot_image = rotate(array, 
+                        angle = -360 * strength * amplitude, mode ='reflect')
+  return (rot_image*255).astype(np.uint8)
+
+#Define zoom effect (not currently working)
+def zoom_func(array, strength, amplitude):
+  zoom_image = rescale(array, strength * amplitude, order=None, mode='reflect', cval=0, clip=True, preserve_range=False, multichannel=True, anti_aliasing=None, anti_aliasing_sigma=None)
+  
+  (array,
+                      strength * amplitude, anti_aliasing=False, multichannel=True)
+  
+  image = color.rgb2gray(zoom_image)
+  return (zoom_image*255).astype(np.uint8)
+
+ 
+#swirl parameters
+swirl_effect = EffectsGenerator(swirl_func,
+                                audio = 'RAVEtestFINALAUDIO.wav', 
+                                strength = 0.2, 
+                               percussive = True)
+#rotate parameters
+rotate_effect = EffectsGenerator(rotate_func,
+                                audio = 'RAVEtestFINALAUDIO.wav', 
+                                strength = 0.2, 
+                                percussive = True)
+
+#zoom_effect = EffectsGenerator(zoom_func,
+                              #  audio = 'RAVEtestFINALAUDIO.wav', 
+                              #  strength = 0.9, 
+                              # percussive = True)
+
+#download audio
+! gdown --id 1SCd_5YmKYH3CHJXRVjhoFF1jXq4Z5tvf
+#download .pkl file
+! gdown --id 1CO2bjwVNS9WnG-Y050PZfLmlh2CTEUay
+
+#load audio and .pkl
+L = LucidSonicDream('RAVEtestFINALAUDIO.wav',
+                    style = 'blended2.pkl')
+
+#parameters for video creation
+L.hallucinate('RAVE.mp4',
+              resolution = 1080,
+              duration = 50, 
+
+              motion_percussive = True,
+              motion_harmonic = True,
+              motion_randomness = 0.5,
+              motion_react = 0.5,
+
+              speed_fpm = 12,
+
+              pulse_percussive = False,
+              pulse_harmonic = True,
+              pulse_react = 0.5,
+
+              contrast_strength = 1.0,
+              flash_strength = 0.0,
+              custom_effects = [swirl_effect, rotate_effect], 
+              batch_size = 2)
+
+#download video file
+files.download("RAVE.mp4")
