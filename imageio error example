@@ -1,0 +1,50 @@
+Preparing style...
+Loading networks from cat.pkl...
+Preparing audio...
+Loading effects...
+Number of model classes:  0
+
+Doing math...
+
+
+Hallucinating... 
+
+  0%|          | 0/1801 [00:00<?, ?it/s]
+
+Setting up PyTorch plugin "bias_act_plugin"... Done.
+Setting up PyTorch plugin "upfirdn2d_plugin"... Done.
+
+100%|██████████| 1801/1801 [01:41<00:00, 17.78it/s]
+
+
+Generating movie...
+
+
+---------------------------------------------------------------------------
+
+ValueError                                Traceback (most recent call last)
+
+<ipython-input-41-6dc6532fda1c> in <module>()
+     11                     style = 'cat')
+     12 
+---> 13 L.hallucinate(file_name = 'printsVidTEST1.mp4')
+     14 
+     15 files.download("printsVidTEST1.mp4")
+
+1 frames
+
+/content/lucid-sonic-dreamsTEST-main/lucidsonicdreams/main.py in hallucinate(self, file_name, output_audio, fps, resolution, start, duration, save_frames, batch_size, speed_fpm, pulse_percussive, pulse_harmonic, pulse_react, motion_percussive, motion_harmonic, motion_react, motion_randomness, truncation, classes, dominant_classes_first, class_pitch_react, class_smooth_seconds, class_complexity, class_shuffle_seconds, class_shuffle_strength, contrast_strength, contrast_percussive, flash_strength, flash_percussive, custom_effects)
+    761     # Write temporary movie file
+    762     print('\nGenerating movie...\n')
+--> 763     imageio.mimwrite('tmp.mp4', all_frames, quality=8, fps=self.sr/self.frame_duration)
+    764 
+    765     # Write temporary audio file
+
+/usr/local/lib/python3.7/dist-packages/imageio/core/functions.py in mimwrite(uri, ims, format, **kwargs)
+    350                     raise ValueError("Image must be 2D " "(grayscale, RGB, or RGBA).")
+    351             else:
+--> 352                 raise ValueError("Image must be a numpy array.")
+    353 
+    354             # Add image
+
+ValueError: Image must be a numpy array.
